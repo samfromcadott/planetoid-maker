@@ -1,20 +1,18 @@
 #include <iostream>
-#include <raylib.h>
-#include <raymath.h>
-#include <rlgl.h>
 #include <brutus/brutus.h>
+#include <raylib-cpp.hpp>
 
 #include "mesh.hh"
 #include "camera.hh"
 #include "editing.hh"
 #include "sdf.hh"
+#include "typedefs.hh"
 
 int main(void) {
 	const int screenWidth = 800;
 	const int screenHeight = 600;
 
-	InitWindow(screenWidth, screenHeight, "Planetoid Maker");
-	SetWindowSize(screenWidth, screenHeight);
+	raylib::Window window(screenWidth, screenHeight, "Planetoid Maker");
 
 	Camera3D camera = { 0 };
 	camera.position = (Vector3){ 0.0f, 0.0f, 8.0f };
@@ -24,10 +22,16 @@ int main(void) {
 	camera.projection = CAMERA_PERSPECTIVE;
 
 	SetTargetFPS(60);
-	rlDisableBackfaceCulling();
 
 	Brutus::Grid grid(2, 2, 2);
-	SDF::sphere(grid, {8,8,8}, 6.0, -1); // Generate a sphere using an SDF
+	SDF planet = sphere(10.0);
+	// SDF::sphere(grid, {8,8,8}, 6.0, -1); // Generate a sphere using an SDF
+	for (int x = 0; x < grid.total_size().x; x++)
+	for (int y = 0; y < grid.total_size().y; y++)
+	for (int z = 0; z < grid.total_size().z; z++) {
+		float w = planet( vec3(x, y, z) );
+		grid(x, y, z).weight = Clamp(w * 64, -128, 127 );
+	}
 
 	while ( !WindowShouldClose() ) {
 		// get_edit(camera, grid);
@@ -56,8 +60,6 @@ int main(void) {
 
 		EndDrawing();
 	}
-
-	CloseWindow();
 
 	return 0;
 }

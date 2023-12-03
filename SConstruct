@@ -11,7 +11,7 @@ web_env = Environment(
 	CC="emcc",
 	CXX="em++",
 	# TOOLS=TOOLS,
-	CPPPATH=['include', 'submodule/raylib-cpp/include', 'submodule/tileson'],
+	CPPPATH=['include', 'submodule/raylib-cpp/include'],
 	ENV = {'PATH' : os.environ['PATH']},
 	LIBS=['raylib'],
 	LIBPATH=['lib'],
@@ -22,10 +22,7 @@ web_env = Environment(
 )
 web_env['ENV']['TERM'] = os.environ['TERM'] # Colored output
 
-# win_source = [ Glob('build/windows/*.cc') ]
 web_source = [ Glob('build/web/*.cc') ]
-
-# win_env.Program('bin/biogoth.exe', win_source)
 web_env.Program('output/index', web_source)
 
 # subprocess.call( [ '7za', 'u', 'biogoth.zip', 'assets', 'config.cfg', './bin/*' ] ) # Put the files in an archive
