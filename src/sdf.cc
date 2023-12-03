@@ -42,3 +42,24 @@ SDF sub(SDF a, SDF b) {
 		return max( -a(p), b(p) );
 	};
 }
+
+
+SDF add(SDF a, SDF b, float k) {
+	return [=](vec3 p) {
+		const float A = a(p);
+		const float B = b(p);
+
+		float h = clamp( 0.5 + 0.5*(B-A)/k, 0.0, 1.0 );
+		return lerp( B, A, h ) - k * h * (1.0-h);
+	};
+}
+
+SDF sub(SDF a, SDF b, float k) {
+	return [=](vec3 p) {
+		const float A = a(p);
+		const float B = b(p);
+
+		float h = clamp( 0.5 - 0.5*(B+A)/k, 0.0, 1.0 );
+		return lerp( B, -A, h ) + k*h*(1.0-h);
+	};
+}

@@ -8,6 +8,7 @@
 #include "editing.hh"
 #include "sdf.hh"
 #include "typedefs.hh"
+#include "planet.hh"
 
 int main(void) {
 	const int screenWidth = 800;
@@ -33,23 +34,24 @@ int main(void) {
 	camera.target = (Vector3){ r, r, r };
 
 
-	SDF planet = sphere(r);
-	// planet = add( planet, box(5, 5, 1) );
-	// SDF planet = box(5, 5, 2);
-	// planet = transform( planet, mat4::RotateXYZ( vec3(0, 45, 45) ) * mat4::Translate(5, 5, 5) );
-	// SDF::sphere(grid, {8,8,8}, 6.0, -1); // Generate a sphere using an SDF
-
-	for (int i = 0; i < 20; i++) {
-		float radius = GetRandomValue(1, 5);
-		SDF crater = sphere( radius );
-		crater = transform( crater, mat4::Translate(r, 0, 0) );
-		vec3 rotation( GetRandomValue(0, 360), GetRandomValue(0, 360), GetRandomValue(0, 360) );
-		crater = transform( crater, mat4::RotateXYZ(rotation) );
-
-		planet = sub(crater, planet);
-	}
-
-	planet = transform( planet, mat4::Translate(r, r, r) );
+	// SDF planet = sphere(r - 1);
+	// // planet = add( planet, box(5, 5, 1) );
+	// // SDF planet = box(5, 5, 2);
+	// // planet = transform( planet, mat4::RotateXYZ( vec3(0, 45, 45) ) * mat4::Translate(5, 5, 5) );
+	// // SDF::sphere(grid, {8,8,8}, 6.0, -1); // Generate a sphere using an SDF
+	//
+	// for (int i = 0; i < 50; i++) {
+	// 	float radius = GetRandomValue(1, 5);
+	// 	SDF crater = sphere( radius );
+	// 	crater = transform( crater, mat4::Translate(r, 0, 0) );
+	// 	vec3 rotation( GetRandomValue(0, 360), GetRandomValue(0, 360), GetRandomValue(0, 360) );
+	// 	crater = transform( crater, mat4::RotateXYZ(rotation) );
+	//
+	// 	planet = sub(crater, planet);
+	// }
+	//
+	// planet = transform( planet, mat4::Translate(r, r, r) );
+	SDF planet = moon();
 
 	// Set voxel weights
 	for (int x = 0; x < grid.total_size().x; x++)
