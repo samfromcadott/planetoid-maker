@@ -18,3 +18,5 @@ SDF box(float x, float y, float z);
 
 // Operations
 SDF transform(SDF f, mat4 m);
+SDF add(SDF a, SDF b);
+SDF sub(SDF a, SDF b);

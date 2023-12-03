@@ -16,7 +16,7 @@ web_env = Environment(
 	LIBS=['raylib'],
 	LIBPATH=['lib'],
 	CCFLAGS = f'--target={target} -static -Wno-unknown-warning-option -Wunused-variable -O3',
-	CXXFLAGS=f'--target={target} -static -std=c++20 -Wno-unknown-warning-option -Wunused-variable -O3 -Wno-unqualified-std-cast-call',
+	CXXFLAGS=f'--target={target} -static -std=c++20 -Wno-unknown-warning-option -Wunused-variable -O3 -Wno-unqualified-std-cast-call -D BRUTUS_CHUNK_SIZE=32',
 	LINKFLAGS=f'--target={target} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY -s ALLOW_MEMORY_GROWTH --shell-file shell.html',
 	PROGSUFFIX='.html'
 )

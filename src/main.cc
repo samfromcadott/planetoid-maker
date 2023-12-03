@@ -26,11 +26,30 @@ int main(void) {
 
 	rlSetCullFace(RL_CULL_FACE_FRONT);
 
-	Brutus::Grid grid(2, 2, 2);
-	// SDF planet = sphere(10.0);
-	SDF planet = box(5, 5, 2);
-	planet = transform( planet, mat4::RotateXYZ( vec3(0, 0, 45) ) * mat4::Translate(5, 5, 5) );
+	Brutus::Grid grid(1, 1, 1);
+
+	float r = grid.total_size().x / 2;
+	camera.position = (Vector3){ 0.0f, 0.0f, r };
+	camera.target = (Vector3){ r, r, r };
+
+
+	SDF planet = sphere(r);
+	// planet = add( planet, box(5, 5, 1) );
+	// SDF planet = box(5, 5, 2);
+	// planet = transform( planet, mat4::RotateXYZ( vec3(0, 45, 45) ) * mat4::Translate(5, 5, 5) );
 	// SDF::sphere(grid, {8,8,8}, 6.0, -1); // Generate a sphere using an SDF
+
+	for (int i = 0; i < 20; i++) {
+		float radius = GetRandomValue(1, 5);
+		SDF crater = sphere( radius );
+		crater = transform( crater, mat4::Translate(r, 0, 0) );
+		vec3 rotation( GetRandomValue(0, 360), GetRandomValue(0, 360), GetRandomValue(0, 360) );
+		crater = transform( crater, mat4::RotateXYZ(rotation) );
+
+		planet = sub(crater, planet);
+	}
+
+	planet = transform( planet, mat4::Translate(r, r, r) );
 
 	// Set voxel weights
 	for (int x = 0; x < grid.total_size().x; x++)
@@ -59,13 +78,13 @@ int main(void) {
 
 			BeginMode3D(camera);
 				render_mesh(grid.generate_mesh(0, 0, 0));
-				render_mesh(grid.generate_mesh(0, 0, 1));
-				render_mesh(grid.generate_mesh(0, 1, 0));
-				render_mesh(grid.generate_mesh(0, 1, 1));
-				render_mesh(grid.generate_mesh(1, 0, 0));
-				render_mesh(grid.generate_mesh(1, 0, 1));
-				render_mesh(grid.generate_mesh(1, 1, 0));
-				render_mesh(grid.generate_mesh(1, 1, 1));
+				// render_mesh(grid.generate_mesh(0, 0, 1));
+				// render_mesh(grid.generate_mesh(0, 1, 0));
+				// render_mesh(grid.generate_mesh(0, 1, 1));
+				// render_mesh(grid.generate_mesh(1, 0, 0));
+				// render_mesh(grid.generate_mesh(1, 0, 1));
+				// render_mesh(grid.generate_mesh(1, 1, 0));
+				// render_mesh(grid.generate_mesh(1, 1, 1));
 				// for (auto& mesh : meshes) render_mesh(mesh);
 
 				// Draw the bounds of the grid

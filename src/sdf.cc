@@ -30,3 +30,15 @@ SDF transform(SDF f, mat4 m) {
 		return f( p.Transform( m.Invert() ) );
 	};
 }
+
+SDF add(SDF a, SDF b) {
+	return [=](vec3 p) {
+		return min( a(p), b(p) );
+	};
+}
+
+SDF sub(SDF a, SDF b) {
+	return [=](vec3 p) {
+		return max( -a(p), b(p) );
+	};
+}
