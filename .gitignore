@@ -1,0 +1,7 @@
+output
+lib
+include
+emsdk
+.sconsign.dblite
+*.zip
+build
