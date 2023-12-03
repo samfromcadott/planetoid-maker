@@ -1,10 +1,6 @@
-#include <raylib.h>
+#include <raylib-cpp.hpp>
 #include <rlgl.h>
 #include <brutus/brutus.h>
-
-// void generate_mesh(Mesh& mesh, const Brutus::Grid& grid) {
-// 	grid.generate_mesh()
-// }
 
 void render_mesh(Brutus::Mesh mesh) {
 	rlPushMatrix();

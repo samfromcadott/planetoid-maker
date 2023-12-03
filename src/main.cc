@@ -1,6 +1,7 @@
 #include <iostream>
 #include <brutus/brutus.h>
 #include <raylib-cpp.hpp>
+#include <rlgl.h>
 
 #include "mesh.hh"
 #include "camera.hh"
@@ -23,15 +24,30 @@ int main(void) {
 
 	SetTargetFPS(60);
 
+	rlSetCullFace(RL_CULL_FACE_FRONT);
+
 	Brutus::Grid grid(2, 2, 2);
-	SDF planet = sphere(10.0);
+	// SDF planet = sphere(10.0);
+	SDF planet = box(5, 5, 2);
+	planet = transform( planet, mat4::RotateXYZ( vec3(0, 0, 45) ) * mat4::Translate(5, 5, 5) );
 	// SDF::sphere(grid, {8,8,8}, 6.0, -1); // Generate a sphere using an SDF
+
+	// Set voxel weights
 	for (int x = 0; x < grid.total_size().x; x++)
 	for (int y = 0; y < grid.total_size().y; y++)
 	for (int z = 0; z < grid.total_size().z; z++) {
 		float w = planet( vec3(x, y, z) );
 		grid(x, y, z).weight = Clamp(w * 64, -128, 127 );
 	}
+
+	// Generate the mesh
+	// std::vector< Brutus::Mesh > meshes;
+	// for (int x = 0; x < grid.chunk_size().x; x++)
+	// for (int y = 0; y < grid.chunk_size().y; y++)
+	// for (int z = 0; z < grid.chunk_size().z; z++) {
+	// 	std::cout << x << " " << y << " " << z << '\n';
+	// 	meshes.push_back( grid.generate_mesh(x, y, z) );
+	// }
 
 	while ( !WindowShouldClose() ) {
 		// get_edit(camera, grid);
@@ -50,6 +66,7 @@ int main(void) {
 				render_mesh(grid.generate_mesh(1, 0, 1));
 				render_mesh(grid.generate_mesh(1, 1, 0));
 				render_mesh(grid.generate_mesh(1, 1, 1));
+				// for (auto& mesh : meshes) render_mesh(mesh);
 
 				// Draw the bounds of the grid
 				const Color clear_grey = {224, 224, 224, 128};

@@ -12,4 +12,9 @@
 
 typedef std::function< float(vec3) > SDF;
 
+// Primatives
 SDF sphere(float radius);
+SDF box(float x, float y, float z);
+
+// Operations
+SDF transform(SDF f, mat4 m);
