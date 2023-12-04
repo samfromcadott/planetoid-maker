@@ -13,6 +13,7 @@ void render_mesh(Brutus::Mesh mesh) {
 			mesh.vertices[i+1],
 			mesh.vertices[i+2]
 		);
+
 		rlColor3f(
 			(mesh.normals[i+0] + 1.0) / 2.0,
 			(mesh.normals[i+1] + 1.0) / 2.0,

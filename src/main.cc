@@ -51,7 +51,7 @@ int main(void) {
 	// }
 	//
 	// planet = transform( planet, mat4::Translate(r, r, r) );
-	SDF planet = moon();
+	SDF planet = asteroid();
 
 	// Set voxel weights
 	for (int x = 0; x < grid.total_size().x; x++)
