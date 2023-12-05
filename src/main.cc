@@ -2,6 +2,8 @@
 #include <brutus/brutus.h>
 #include <raylib-cpp.hpp>
 #include <rlgl.h>
+#define RAYGUI_IMPLEMENTATION
+#include <raygui.h>
 
 #include "mesh.hh"
 #include "camera.hh"
@@ -9,6 +11,11 @@
 #include "sdf.hh"
 #include "typedefs.hh"
 #include "planet.hh"
+
+Brutus::Grid grid(1, 1, 1);
+
+void gui_update();
+void new_planet();
 
 int main(void) {
 	const int screenWidth = 800;
@@ -25,26 +32,16 @@ int main(void) {
 
 	SetTargetFPS(60);
 
-	rlSetCullFace(RL_CULL_FACE_FRONT);
-
-	Brutus::Grid grid(1, 1, 1);
+	GuiLoadStyleDefault();
+	GuiSetStyle(LABEL, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
 
 	float r = grid.total_size().x / 2;
 	camera.position = (Vector3){ 0.0f, 0.0f, r };
 	camera.target = (Vector3){ r, r, r };
 
-	SDF planet = asteroid();
-
-	// Set voxel weights
-	for (int x = 0; x < grid.total_size().x; x++)
-	for (int y = 0; y < grid.total_size().y; y++)
-	for (int z = 0; z < grid.total_size().z; z++) {
-		float w = planet( vec3(x, y, z) );
-		grid(x, y, z).weight = Clamp(w * 64, -128, 127 );
-	}
+	new_planet();
 
 	while ( !WindowShouldClose() ) {
-		// get_edit(camera, grid);
 		update_camera(camera);
 
 		BeginDrawing();
@@ -52,6 +49,7 @@ int main(void) {
 			ClearBackground({32, 32, 32, 255});
 
 			BeginMode3D(camera);
+				rlSetCullFace(RL_CULL_FACE_FRONT);
 				render_mesh(grid.generate_mesh(0, 0, 0));
 
 				// Draw the bounds of the grid
@@ -61,8 +59,27 @@ int main(void) {
 
 			EndMode3D();
 
+			gui_update();
+
 		EndDrawing();
 	}
 
 	return 0;
+}
+
+void gui_update() {
+	rlSetCullFace(RL_CULL_FACE_BACK);
+	if (GuiButton({10, 10, 70, 20}, "Generate") ) new_planet();
+}
+
+void new_planet() {
+		SDF planet = moon();
+
+		// Set voxel weights
+		for (int x = 0; x < grid.total_size().x; x++)
+		for (int y = 0; y < grid.total_size().y; y++)
+		for (int z = 0; z < grid.total_size().z; z++) {
+			float w = planet( vec3(x, y, z) );
+			grid(x, y, z).weight = Clamp(w * 64, -128, 127 );
+		}
 }
