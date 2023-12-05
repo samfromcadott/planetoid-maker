@@ -5,10 +5,10 @@
 #include "camera.hh"
 
 float sensitivity = 5.0;
-float rotate_h = 0.0;
-float rotate_v = 0.0;
-float zoom = 16.0;
-float zoom_speed = 30.0;
+float rotate_h = 0.79;
+float rotate_v = 0.79;
+float zoom = 32.0;
+float zoom_speed = 35.0;
 float zoom_min = 16.0;
 float zoom_max = 64.0;
 

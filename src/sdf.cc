@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 #include <raylib.h>
 #include <raymath.h>
@@ -10,6 +11,12 @@
 using namespace std;
 
 // Primatives
+SDF space() {
+	return [=](vec3 p) {
+		return std::numeric_limits<float>::infinity();
+	};
+}
+
 SDF sphere(float radius) {
 	return [=](vec3 p) {
 		return p.Length() - radius;

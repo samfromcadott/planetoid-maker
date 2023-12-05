@@ -33,7 +33,7 @@ int main(void) {
 	camera.position = (Vector3){ 0.0f, 0.0f, r };
 	camera.target = (Vector3){ r, r, r };
 
-	SDF planet = moon();
+	SDF planet = asteroid();
 
 	// Set voxel weights
 	for (int x = 0; x < grid.total_size().x; x++)

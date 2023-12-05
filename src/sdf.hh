@@ -7,6 +7,7 @@
 typedef std::function< float(vec3) > SDF;
 
 // Primatives
+SDF space();
 SDF sphere(float radius);
 SDF box(float x, float y, float z);
 
