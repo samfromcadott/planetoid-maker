@@ -14,6 +14,14 @@
 
 Brutus::Grid grid(1, 1, 1);
 
+enum PlanetType {
+	MOON,
+	ASTEROID
+};
+
+int current_planet = MOON;
+bool drop_down = false;
+
 void gui_update();
 void new_planet();
 
@@ -69,17 +77,31 @@ int main(void) {
 
 void gui_update() {
 	rlSetCullFace(RL_CULL_FACE_BACK);
-	if (GuiButton({10, 10, 70, 20}, "Generate") ) new_planet();
+
+	if ( GuiDropdownBox({10, 10, 100, 20}, "MOON;ASTEROID", &current_planet, drop_down) )
+		drop_down = !drop_down;
+
+	if (GuiButton({120, 10, 70, 20}, "GENERATE") )
+		new_planet();
 }
 
 void new_planet() {
-		SDF planet = moon();
+	SDF planet = space();
 
-		// Set voxel weights
-		for (int x = 0; x < grid.total_size().x; x++)
-		for (int y = 0; y < grid.total_size().y; y++)
-		for (int z = 0; z < grid.total_size().z; z++) {
-			float w = planet( vec3(x, y, z) );
-			grid(x, y, z).weight = Clamp(w * 64, -128, 127 );
-		}
+	switch (current_planet) {
+		case MOON:
+			planet = moon();
+			break;
+		case ASTEROID:
+			planet = asteroid();
+			break;
+	}
+
+	// Set voxel weights
+	for (int x = 0; x < grid.total_size().x; x++)
+	for (int y = 0; y < grid.total_size().y; y++)
+	for (int z = 0; z < grid.total_size().z; z++) {
+		float w = planet( vec3(x, y, z) );
+		grid(x, y, z).weight = Clamp(w * 64, -128, 127 );
+	}
 }
