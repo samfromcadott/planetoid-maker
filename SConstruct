@@ -25,4 +25,4 @@ web_env['ENV']['TERM'] = os.environ['TERM'] # Colored output
 web_source = [ Glob('build/web/*.cc') ]
 web_env.Program('output/index', web_source)
 
-# subprocess.call( [ '7za', 'u', 'biogoth.zip', 'assets', 'config.cfg', './bin/*' ] ) # Put the files in an archive
+subprocess.call( [ '7za', 'u', 'planetoid-maker.zip', './output/*' ] ) # Put the files in an archive

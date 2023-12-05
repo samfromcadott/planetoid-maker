@@ -7,7 +7,6 @@
 
 #include "mesh.hh"
 #include "camera.hh"
-#include "editing.hh"
 #include "sdf.hh"
 #include "typedefs.hh"
 #include "planet.hh"
@@ -16,7 +15,8 @@ Brutus::Grid grid(1, 1, 1);
 
 enum PlanetType {
 	MOON,
-	ASTEROID
+	ASTEROID,
+	HEAD
 };
 
 int current_planet = MOON;
@@ -78,10 +78,10 @@ int main(void) {
 void gui_update() {
 	rlSetCullFace(RL_CULL_FACE_BACK);
 
-	if ( GuiDropdownBox({10, 10, 100, 20}, "MOON;ASTEROID", &current_planet, drop_down) )
+	if ( GuiDropdownBox({10, 10, 100, 20}, "MOON;ASTEROID;HEAD", &current_planet, drop_down) )
 		drop_down = !drop_down;
 
-	if (GuiButton({120, 10, 70, 20}, "GENERATE") )
+	if ( GuiButton({120, 10, 70, 20}, "GENERATE") )
 		new_planet();
 }
 
@@ -94,6 +94,9 @@ void new_planet() {
 			break;
 		case ASTEROID:
 			planet = asteroid();
+			break;
+		case HEAD:
+			planet = head();
 			break;
 	}
 
